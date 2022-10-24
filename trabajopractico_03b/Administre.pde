@@ -18,7 +18,6 @@ class Administrador {
 
   void removerPuntero(Blob b) {
     for (int i= punteros.size()-1; i>=0; i--) {
-
       Puntero p = punteros.get(i);
 
       if (p.id == b.id) {

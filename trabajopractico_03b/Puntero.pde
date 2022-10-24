@@ -24,7 +24,7 @@ class Puntero {
     body.setPosition(x, y);
     body.setFillColor(color(255, 0, 0));
     mj = new FMouseJoint(body, x, y);
-
+    mj.setNoStroke();
     mundo.add(body);
     mundo.add(mj);
   }

@@ -63,7 +63,7 @@ void setup() {
   adminInicio = new Administrador(inicio);
 
   // -- Inicializo variables de estado / tiempo
-  estado = "fin";
+  estado = "inicio";
   mov0 = false;
   mov1 = false;
   r = new Reloj();
@@ -104,6 +104,8 @@ void setup() {
 void draw() {
 
   receptor.actualizar(mensajes);
+
+
   switch(estado) {
   case "inicio":
     background(255);
@@ -111,6 +113,7 @@ void draw() {
     inicio.draw();
     bordeder.dibujar();
     bordeizq.dibujar();
+    resetearVariables();
     pushStyle();
     textFont(font);
     fill(0);
@@ -144,7 +147,7 @@ void draw() {
     text("INSTRUCCIONES", width/2-180, height/2);
     popStyle();
     if (r.timer < 1) {
-      estado = "fin";
+      estado = "juego";
       break;
     }
     break;
@@ -193,6 +196,7 @@ void draw() {
     break;
   case "fin":
     background(255);
+    resetearPosiciones();
     r.actualizar();
     r.setTimer(4);
     bordeder.dibujar();
@@ -211,13 +215,20 @@ void draw() {
     text(contador_celestes, width/2+200, 360);
     text(contador_violetas, width/2+200, 440);
     popStyle();
-    //if (r.timer < 1) {
-    //  estado = "fin";
-    //  break;
-    //}
+    if (r.timer < 1) {
+      estado = "inicio";
+      break;
+    }
     break;
   }
-
+  for (Blob b : receptor.blobs) {
+    if (b.salio) {
+      admin.removerPuntero(b);
+      adminInicio.crearPuntero(b);
+    }
+    admin.actualizarPuntero(b);
+    adminInicio.actualizarPuntero(b);
+  }
   println(r.timer);
 }
 

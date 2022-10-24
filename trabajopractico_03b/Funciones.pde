@@ -145,3 +145,46 @@ void borrarManchas() {
     manchas.remove(m);
   }
 }
+
+void borrarCaramelos() {
+  for (int i = 0; i < cs.size(); i++) {
+    cs.get(i).borrar();
+  }
+}
+
+void resetearVariables() {
+  puntos = 0;
+  vidas = 5;
+  x0 = random(140, width-140);
+  x1 = random(140, width-140);
+  x2 = random(140, width-140);
+  x3 = random(140, width-140);
+  y0 = random(100, height-200);
+  y1 = random(100, height-200);
+  y2 = random(100, height-200);
+  y3 = random(100, height-200);
+  contador_rosas = 0;
+  contador_amarillos = 0;
+  contador_celestes = 0;
+  contador_violetas = 0;
+}
+
+void resetearPosiciones() {
+  // -- Reseteo las posiciones de los objetos y vacío los arraylist
+  c.resetearValores();
+  borrarManchas();
+  borrarCaramelos();
+  mov0 = false;
+  mov1 = false;
+  p.resetearPendulo();
+  p1.resetearPendulo();
+
+  for (Blob b : receptor.blobs) {
+    if (b.salio) {
+      admin.removerPuntero(b);
+      adminInicio.crearPuntero(b);
+    }
+    admin.actualizarPuntero(b);
+    adminInicio.actualizarPuntero(b);
+  }
+}
