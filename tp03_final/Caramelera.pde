@@ -80,7 +80,7 @@ class Caramelera {
   }
 
   void dibujar() {
-    int i = 0;
+    int i = 1;
     r.actualizar();
     contadorInicioSprite++;
 

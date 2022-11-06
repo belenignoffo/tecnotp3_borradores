@@ -116,7 +116,7 @@ void contactStarted(FContact contact) {
   }
 }
 
-void dibujarManchas(int valor, float posx, float posy) {
+void dibujarManchas( int valor, float posx, float posy ) {
   if (manchas.size() > valor) {
     image(manchas.get(valor), posx, posy);
   }
@@ -128,11 +128,36 @@ void borrarCaramelos() {
   }
 }
 
+void borrarManchas() {
+  for (int i = 0; i < manchas.size(); i ++) {
+    PImage m = manchas.get(i);
+    manchas.remove(m);
+  }
+}
+
+void direccionarCaramelos() {
+  for (Caramelo c : cs) {
+    float x = c.getVelocityX();
+    float y = c.getVelocityY();
+
+    if (c.isTouchingBody(flynnPaffRosa)) {
+      c.addImpulse(-10, -1);
+    }
+    if (c.isTouchingBody(flynnPaffVioleta)) {
+      c.addImpulse(10, -1);
+    }
+    if (x <= 0 && y <= 0) {
+      c.addImpulse(random(-20, 20), 0);
+    }
+  }
+}
+
 void actualizarValoresInicio() {
   borrarCaramelos();
   variablesNumericas();
   c.resetear();
   bolsa.resetear();
+  borrarManchas();
   mov0 = false;
   mov1 = false;
 }

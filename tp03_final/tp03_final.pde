@@ -10,6 +10,13 @@ FWorld mundo;
 Minim minim;
 Sonido s;
 
+// --- Variable del puerto para OSC
+int PUERTO_OSC = 12345;
+
+// --- BlobObjectTracker clases
+Receptor receptor;
+Administrador admin, adminInicio;
+
 // --- Variables de estado y/o tiempo
 String estado;
 boolean mov0, mov1;
@@ -32,8 +39,6 @@ PImage fondo, bolsaRoja, bolsaPuntos, imagenVidas;
 ArrayList <PImage> manchas;
 PFont fuente;
 
-// --- Prueba
-FCircle circulo;
 
 void setup() {
   size( 800, 1000 );
@@ -47,6 +52,11 @@ void setup() {
   mundo.setEdges();
   s = new Sonido();
   s.playMusicaFondo();
+
+  // --- Inicializo BlobObjectTracker clases
+  setupOSC(PUERTO_OSC);
+  receptor = new Receptor();
+  admin = new Administrador(mundo);
 
   // -- Inicializo las variables de estado y/o tiempo
   estado = "inicio";
@@ -71,8 +81,8 @@ void setup() {
 void draw() {
   background(255);
   image(fondo, 0, 0);
+  receptor.actualizar(mensajes);
   mundo.step();
-
 
   if (estado.equals( "inicio" )) {
     mundo.draw();
@@ -103,6 +113,7 @@ void draw() {
 
     // -- Métodos de la caramelera y caramelos
     c.dibujar();
+    direccionarCaramelos();
 
     // -- Datos de los puntos y las vidas
     pushStyle();
@@ -115,8 +126,12 @@ void draw() {
     text(vidas, 650, 75);
     popStyle();
 
-    for (int i = 0; i < 5; i++) {
-      dibujarManchas(i, x[i], y[i]);
+    // -- Manchas
+    dibujarManchas(0, x[0], y[0]);
+    if ( manchas.size() > 0 ) {
+      for (int i = manchas.size(); i > 0; i--) {
+        dibujarManchas(i, x[i], y[i]);
+      }
     }
   }
   if (estado.equals( "fin" )) {
@@ -128,6 +143,7 @@ void draw() {
     bolsa.borrarImagen();
   }
 }
+
 void mouseClicked() {
   switch( estado ) {
   case "inicio":
@@ -161,7 +177,7 @@ void cargarImagenes() {
   bolsaRoja = loadImage("bolsa_roja.png");
   bolsaPuntos = loadImage("bolsapuntos.png");
   imagenVidas = loadImage("corazon.png");
-  
+
   manchas = new ArrayList<PImage>();
 }
 
@@ -173,21 +189,21 @@ void cargarBloques() {
     bloquesFijos.add(bf);
   }
   // Izquierda
-  bloquesFijos.get(0).dibujar(130, 273, "fijo", true, golosina[2], 0.5);
-  bloquesFijos.get(1).dibujar(310, 468, "fijo", true, golosina[4], 0.5);
-  bloquesFijos.get(2).dibujar(190, 336, "fijo", true, golosina[8], 1);
+  bloquesFijos.get(0).dibujar(130, 273, "fijo", false, golosina[2], 0.5);
+  bloquesFijos.get(1).dibujar(310, 468, "fijo", false, golosina[4], 0.5);
+  bloquesFijos.get(2).dibujar(190, 336, "fijo", false, golosina[8], 1);
 
   // Derecha
-  bloquesFijos.get(3).dibujar(670, 403, "fijo", true, golosina[8], 1);
-  bloquesFijos.get(4).dibujar(550, 533, "fijo", true, golosina[3], 0.5);
-  bloquesFijos.get(5).dibujar(430, 662, "fijo", true, golosina[6], 0.5);
-  bloquesFijos.get(6).dibujar(670, 662, "fijo", true, golosina[7], 0.5);
+  bloquesFijos.get(3).dibujar(670, 403, "fijo", false, golosina[8], 1);
+  bloquesFijos.get(4).dibujar(550, 533, "fijo", false, golosina[3], 0.5);
+  bloquesFijos.get(5).dibujar(430, 662, "fijo", false, golosina[6], 0.5);
+  bloquesFijos.get(6).dibujar(670, 662, "fijo", false, golosina[7], 0.5);
 
   flynnPaffRosa = new Plataforma(60, 50);
-  flynnPaffRosa.dibujar(375, 468, "fijo", true, golosina[0], 0.2);
+  flynnPaffRosa.dibujar(375, 468, "fijo", false, golosina[0], 0.2);
 
   flynnPaffVioleta = new Plataforma(60, 50);
-  flynnPaffVioleta.dibujar(130, 567, "fijo", true, golosina[1], 0.2);
+  flynnPaffVioleta.dibujar(130, 567, "fijo", false, golosina[1], 0.2);
 }
 
 void cargarPendulos() {

@@ -86,6 +86,6 @@ class Plataforma extends FBox {
   }
 
   void resetear() {
-    //bolsa.setPosition(x_inicial, 800);
+    //bolsa.setPosition(x_inicial, y_inicial);
   }
 }
