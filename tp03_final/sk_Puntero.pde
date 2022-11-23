@@ -22,8 +22,9 @@ class Puntero {
 
     body = new FCircle(diametro);
     body.setPosition(x, y);
-    body.setNoFill();
-    body.setNoStroke();
+    //body.setNoFill();
+    //body.setNoStroke();
+    body.setFillColor(color(255, 0, 0));
     mj = new FMouseJoint(body, x, y);
     mj.setNoStroke();
     mundo.add(body);

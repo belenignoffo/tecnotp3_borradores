@@ -21,7 +21,7 @@ class Plataforma extends FBox {
   Plataforma(float w, float h) {
     super(w, h);
     derecha = false;
-    t = 50;
+    t = 500;
   }
 
   void dibujar(float x, float y, String nombre, boolean valor, PImage bloque, float r) {
@@ -30,8 +30,9 @@ class Plataforma extends FBox {
 
     setPosition(x_bloque, y_bloque);
     setName(nombre);
-    setGrabbable(valor);
-    attachImage(bloque);
+    setGrabbable(true);
+    setFillColor(color(0, 255, 0));
+    //attachImage(bloque);
     setRestitution(r);
     setStatic(true);
     mundo.add(this);
@@ -56,7 +57,8 @@ class Plataforma extends FBox {
     setGrabbable(false);
     setStatic(true);
     setSensor(sensor);
-    setFillColor(color(0, 0, 0));
+    setNoFill();
+    //setFillColor(color(0, 0, 0));
     setNoStroke();
     setRestitution(r);
     mundo.add(this);
@@ -85,7 +87,7 @@ class Plataforma extends FBox {
     }
   }
 
-  void resetear() {
-    //bolsa.setPosition(x_inicial, y_inicial);
-  }
+  //void resetear() {
+  //  bolsa.setPosition(x_inicial, 890);
+  //}
 }

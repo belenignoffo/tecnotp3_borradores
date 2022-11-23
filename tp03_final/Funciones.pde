@@ -47,14 +47,28 @@ void contactStarted(FContact contact) {
       s.playReboteChupetin();
     }
 
+    if (hayColisionEntre(contact, "caramelo_rosa", "bolsaRoja")) {
+      bolsaDestellosValor = 1;
+    }
+    if (hayColisionEntre(contact, "caramelo_amarillo", "bolsaRoja")) {
+      bolsaDestellosValor = 1;
+    }
+    if (hayColisionEntre(contact, "caramelo_violeta", "bolsaRoja")) {
+      bolsaDestellosValor = 1;
+    }
+    if (hayColisionEntre(contact, "caramelo_celeste", "bolsaRoja")) {
+      bolsaDestellosValor = 1;
+    }
     if ((uno == piso && dos != bolsa) || (dos == piso && uno != bolsa)) {
       FBody ball = null;
       if (uno == piso && nombreDos != "movible" && dos != bolsa) {
         ball = dos;
         vidas--;
+        frameActualPaleta += 1;
       } else if (dos == piso && nombreUno != "movible" && uno != bolsa) {
         ball = uno;
         vidas--;
+        frameActualPaleta += 1;
       }
       if (ball == null) {
         return;
@@ -156,8 +170,8 @@ void actualizarValoresInicio() {
   borrarCaramelos();
   variablesNumericas();
   c.resetear();
-  bolsa.resetear();
   borrarManchas();
   mov0 = false;
   mov1 = false;
+  frameActualPaleta = 0;
 }
